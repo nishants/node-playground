@@ -24,3 +24,5 @@ app.post("/todos", (request, response)=> {
 		response.status(400).send({status: "error", error});
 	})
 });
+
+module.exports = app;
