@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const {db} = require('./db');
 const User = require('./models/user');
 const Todo = require('./models/todo');
-
+const Page = require('./models/page');
 const app = express();
 
 app.use(bodyParser.json());
@@ -26,18 +26,17 @@ app.post("/todos", (request, response)=> {
 });
 
 app.get('/todos', (request, response)=>{
-	const 
-		pageSize = parseInt(request.query.limit) || 10,
-		pageIndex = parseInt(request.query.page) || 0;
+
+	const page = Page.forRequest(request);
 
 	Todo.find()
-    .skip(pageIndex*pageSize)
-    .limit(pageSize)
+    .skip(page.index*page.size)
+    .limit(page.size)
     .exec(function (error, todos) {
         if(error) { return response.status(500).send(error); };
         Todo.count().then((count)=> {
 	        response.send({
-	        	page: {index: pageIndex, limit: pageSize, maxPage: parseInt(count/pageSize)},
+	        	page: page.count(count),
 	        	todos
 	        });        	
         })
