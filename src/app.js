@@ -25,4 +25,25 @@ app.post("/todos", (request, response)=> {
 	})
 });
 
+app.get('/todos', (request, response)=>{
+	const 
+		pageSize = parseInt(request.query.limit) || 10,
+		pageIndex = parseInt(request.query.page) || 0;
+
+	Todo.find()
+    .skip(pageIndex*pageSize)
+    .limit(pageSize)
+    .exec(function (error, todos) {
+        if(error) { return response.status(500).send(error); };
+        Todo.count().then((count)=> {
+	        response.send({
+	        	page: {index: pageIndex, limit: pageSize, maxPage: parseInt(count/pageSize)},
+	        	todos
+	        });        	
+        })
+    });
+
+	console.log(request);
+});
+
 module.exports = app;
