@@ -16,7 +16,7 @@ services:
     command:
       - /bin/bash
       - -c
-      - yarn --pure-lockfile && yarn test
+      - yarn --pure-lockfile && yarn test-watch
   mongo:
     image: "mongo:3.6.3"
     ports:
