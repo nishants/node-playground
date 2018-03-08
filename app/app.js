@@ -7,11 +7,11 @@ const User = require('./models/user');
 const Todo = require('./models/todo');
 const Page = require('./models/page');
 const app  = express();
-
+const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
-app.listen(3000, ()=> {
-	console.log("running on 3000");
+app.listen(port, ()=> {
+	console.log(`running on ${port}`);
 });
 
 app.post("/todos", (request, response)=> {

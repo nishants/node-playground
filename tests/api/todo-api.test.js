@@ -2,8 +2,8 @@ const
 	request = require('supertest'),
 	expect = require('chai').expect
 
-	app  = require('../../src/app'),
-	Todo = require('../../src/models/todo');
+	app  = require('../../app/app'),
+	Todo = require('../../app/models/todo');
 
 describe(" /todos", ()=> {
 	beforeEach((done)=> {
