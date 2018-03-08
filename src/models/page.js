@@ -12,7 +12,7 @@ const
 module.exports = { 
 	forRequest : (request)=> {
 	const 
-		pageSize = parseInt(request.query.limit) || 10,
+		pageSize = parseInt(request.query.size) || 10,
 		pageIndex = parseInt(request.query.page) || 0;
 
 	return Page(pageSize, pageIndex);

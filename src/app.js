@@ -1,11 +1,12 @@
-const express = require('express');
+const express 	 = require('express');
 const bodyParser = require("body-parser");
+const {ObjectID} = require('mongodb')
 
 const {db} = require('./db');
 const User = require('./models/user');
 const Todo = require('./models/todo');
 const Page = require('./models/page');
-const app = express();
+const app  = express();
 
 app.use(bodyParser.json());
 
@@ -41,8 +42,24 @@ app.get('/todos', (request, response)=>{
 	        });        	
         })
     });
+});
 
-	console.log(request);
+app.get('/todos/:todoID', (request, response)=>{
+	const 
+		todoID = request.params.todoID,
+		onSuccess = (todo)=> {
+			response.send({todo: todo, status: "success"});
+		},
+		onNotFound = ()=>{
+			response.status(404).send({status: "error"});
+		};
+
+	if(!ObjectID.isValid(todoID)){
+		return onNotFound();
+	}
+	Todo.findById(todoID).then((todo)=>{
+		todo ? onSuccess(todo) : onNotFound();
+	});
 });
 
 module.exports = app;
