@@ -1,10 +1,10 @@
 version: '2'
 
 services:
-  express-mongoose-es6-rest-api:
+  whatflix:
     build:
       context: .
-    image: express-mongoose-es6-rest-api:latest
+    image: whatflix:latest
 
     volumes:
       - .:/app
