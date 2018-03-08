@@ -1,7 +1,6 @@
 const 
 	request = require('supertest'),
-	expect = require('chai').expect
-
+	expect = require('chai').expect,
 	app  = require('../../app/app'),
 	Todo = require('../../app/models/todo');
 
