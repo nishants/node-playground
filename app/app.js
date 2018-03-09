@@ -62,4 +62,17 @@ app.get('/todos/:todoID', (request, response)=>{
 	});
 });
 
+app.delete('/todos/:todoID', (request, response)=> {
+  const
+      todoId = request.params.todoID,
+      onDeleteSuccess = deleted=> response.send({deleted}),
+      onNotFound = ()=> {
+        response.status(404).send({status: "error"})
+      },
+      validId = ObjectID.isValid(todoId);
+
+  validId ?
+      Todo.findByIdAndRemove(todoId).then(deleted => deleted ? onDeleteSuccess(deleted) : onNotFound())
+      : onNotFound();
+});
 module.exports = app;

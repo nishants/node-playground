@@ -2,7 +2,8 @@ const
     request = require('supertest'),
     expect = require('chai').expect,
     app = require('../../app/app'),
-    Todo = require('../../app/models/todo');
+    Todo = require('../../app/models/todo'),
+    {ObjectID} = require('mongodb');
 
 describe(" /todos", ()=> {
   beforeEach((done)=> {
@@ -133,6 +134,47 @@ describe(" /todos", ()=> {
               done();
             })
           });
+    });
+  });
+  describe("DELETE /todos/:id", ()=>{
+    let
+        text = "todo to fetch",
+        todoID = null;
+
+    beforeEach(done=> {
+      new Todo({text}).save().then(created => {
+        todoID = created._id;
+        done();
+      });
+    });
+
+    it("should delete todo", (done)=> {
+      request(app)
+        .delete(`/todos/${todoID}`)
+        .expect(200)
+        .end((error, response)=> {
+            expect(error).to.be.null;
+            expect(response.body.deleted).to.include({text});
+            Todo.count().then((count)=> {
+              expect(count).to.equal(0);
+              done();
+            });
+          });
+    });
+
+    it("should reutrn 404 if invalid id", (done)=> {
+      request(app)
+          .delete('/todos/invalid-id')
+          .expect(404)
+          .end(done);
+    });
+
+    it("should reutrn 404 if id not found", (done)=> {
+      const nonExistentId = new ObjectID().toHexString();
+      request(app)
+          .delete(`/todos/${nonExistentId}`)
+          .expect(404)
+          .end(done);
     });
   });
 });
