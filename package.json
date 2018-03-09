@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "node node_modules/eslint/bin/eslint.js app",
     "start": "node app/app.js",
-    "test": " node node_modules/nyc/bin/nyc.js mocha tests/**/*.test.js --test",
+    "test": " nyc mocha tests/**/*.test.js --test",
     "test-watch": "nodemon --exec \"npm test\"",
     "run-watch": "nodemon --exec \"npm run lint && npm start\""
   },
