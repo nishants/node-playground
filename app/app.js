@@ -75,4 +75,19 @@ app.delete('/todos/:todoID', (request, response)=> {
       Todo.findByIdAndRemove(todoId).then(deleted => deleted ? onDeleteSuccess(deleted) : onNotFound())
       : onNotFound();
 });
+
+app.patch('/todos/:todoID/text', (request, response)=> {
+  const
+      todoID    = request.params.todoID,
+      text      = request.body.text,
+      onError   = ()=> response.status(400).send(),
+      notFound  = ()=> response.status(404).send(),
+      onUpdated = todo => todo ? response.send({todo}) : notFound();
+
+  Todo.findByIdAndUpdate(
+      todoID,
+      {$set: {text}},
+      {new: true, runValidators: true}
+  ).then(onUpdated).catch(onError);
+});
 module.exports = app;

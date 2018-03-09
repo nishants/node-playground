@@ -14,14 +14,21 @@ const id = "5a9fe23b582a29f52ac0eec5";
 
 	// Todo.findOne({_id: id}).then(todo => console.log(todo));
 
+  Todo.create({text: "will be updated with invalid text"}).then((todo)=>{
+    Todo.findByIdAndUpdate(
+        todo._id,
+        {$set: {text: "a"}},
+        {new: true, runValidators: true}
+    ).then((updated)=>{
+          console.log("updated", updated);
+        });
+  })
+
 	Todo.findById(id).then(todo=> console.log(todo));
   Todo.create({text: "to be deleted"}).then((created)=> {
     Todo.findByIdAndRemove(created._id).then((deleted)=> {
-      console.log("deleted", deleted)
       Todo.findByIdAndRemove(created._id).then((deleted)=> {
-        console.log("failed delete", deleted)
       });
-
     });
   });
 })();

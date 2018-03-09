@@ -177,6 +177,84 @@ describe(" /todos", ()=> {
           .end(done);
     });
   });
+
+  describe("PATCH /todos/:id", ()=>{
+    let todoID = null;
+    beforeEach((done)=> {
+      new Todo({text: "to be patched"}).save().then((created)=> {
+        todoID = created.id;
+        done();
+      })
+    });
+
+    it("should update text", (done)=> {
+      const text = 'Updated text from API';
+      request(app)
+        .patch(`/todos/${todoID}/text`)
+        .send({text})
+        .expect(200)
+        .end((error, response)=> {
+            expect(error).to.be.null;
+            Todo.findById(todoID).then((todo)=> {
+              expect(todo.text).to.equal(text);
+              expect(response.body.todo.text).to.equal(text);
+              done();
+            });
+        });
+    });
+
+    it("should return 404 if id not found", (done)=> {
+      const
+          text = 'Updated text from API',
+          nonExistendId = new ObjectID().toHexString();
+      request(app)
+        .patch(`/todos/${nonExistendId}/text`)
+        .send({text})
+        .expect(404)
+        .end((error, response)=> {
+            expect(error).to.be.null;
+            done();
+        });
+    });
+
+    it("should return 400 if text invalid", (done)=> {
+      const
+          text = 'a';
+      request(app)
+        .patch(`/todos/${todoID}/text`)
+        .send({text})
+        .expect(400)
+        .end(done);
+    });
+
+    it("should return 400 if id is invalid", (done)=> {
+      const
+          text = 'some valid text';
+      request(app)
+        .patch(`/todos/invalid-id/text`)
+        .send({text})
+        .expect(400)
+        .end(done);
+    });
+
+    it("should return 404 if id is not found", (done)=> {
+      const
+          nonExistentId = new ObjectID().toHexString(),
+          text = 'some valid text';
+      request(app)
+        .patch(`/todos/${nonExistentId}/text`)
+        .send({text})
+        .expect(404)
+        .end(done);
+    });
+
+  //  invalid id
+  //  id not found
+  //  completed
+  //
+
+  });
+
 });
 
 	
