@@ -1,4 +1,18 @@
 language: node_js
-node_js:
-  - "iojs"
   - "9.4.0"
+#
+#install:
+#  - npm install
+
+services:
+  - mongodb
+
+#before_script:
+#  - npm run makedb localhost
+
+cache:
+  directories:
+    - "node_modules"
+
+script:
+  - npm run test
