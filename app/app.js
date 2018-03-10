@@ -2,10 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 
-const Todo = require('./models/todo');
-const Page = require('./models/page');
-const app = express();
-const port = process.env.PORT || 3000;
+const
+  Todo = require('./models/todo'),
+  Page = require('./models/page'),
+  User = require('./models/User');
+
+const
+  app = express(),
+  port = process.env.PORT || 3000;
+
 require('./db');
 app.use(bodyParser.json());
 
@@ -90,5 +95,14 @@ app.patch('/todos/:todoID/text', (request, response)=> {
     {$set: {text}},
     {new: true, runValidators: true}
   ).then(onUpdated).catch(onError);
+});
+
+app.post('/users', (request, response)=> {
+  const
+    email = request.body.email,
+    password = request.body.password,
+    onSuccess = (user)=> response.send({user});
+
+  new User({email, password}).save().then(onSuccess);
 });
 module.exports = app;
