@@ -1,10 +1,17 @@
-const mongoose = require('mongoose');
+const
+  mongoose = require('mongoose'),
+  validator = require('validator');
+
 const User = mongoose.model('User', {
   email: {
     type: String,
-    minlength: 5,
     trim: true,
-    required: true
+    required: true,
+    unique: true,
+    validate: {
+      validator: validator.isEmail,
+      message  : 'expected {VALUE} to be a valid email'
+    }
   }
 });
 
