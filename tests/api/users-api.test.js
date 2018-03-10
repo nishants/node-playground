@@ -57,5 +57,27 @@ describe('Users', ()=> {
       });
   });
 
+  it('should return 400 if user email is not unique', (done)=> {
+    const
+      email = 'user@email.com',
+      password = '123456';
+
+    new User({email, password}).save().then(()=>{
+      request(app)
+        .post('/users')
+        .send({email, password})
+        .expect(400)
+        .end((error, response)=> {
+          expect(error).to.be.null;
+          console.log(response.body.error);
+          expect(response.body.error).to.not.be.null;
+          User.count().then((count)=>{
+            expect(count).to.equal(1);
+            done();
+          })
+        });
+    });
+  });
+
 
 });
