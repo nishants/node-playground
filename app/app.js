@@ -101,8 +101,9 @@ app.post('/users', (request, response)=> {
   const
     email = request.body.email,
     password = request.body.password,
-    onSuccess = (user)=> response.send({user});
+    onSuccess = (user)=> response.send({user}),
+    saveError = error => response.status(400).send({error: error.message});
 
-  new User({email, password}).save().then(onSuccess);
+  new User({email, password}).save().then(onSuccess).catch(saveError);
 });
 module.exports = app;
