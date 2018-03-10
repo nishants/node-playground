@@ -14,7 +14,8 @@ describe("User", ()=>{
       ];
       invalidEmails.forEach((email, index)=> {
         new User({
-          email: email
+          email: email,
+          password: '1234556'
         }).save().then(()=>{}, (error)=>{
             expect(error.message).to.eql(`User validation failed: email: expected ${email} to be a valid email`);
             index == invalidEmails.length -1 && done();
