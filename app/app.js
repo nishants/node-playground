@@ -37,6 +37,7 @@ app.get('/todos', (request, response)=> {
   Todo.find()
     .skip(page.index * page.size)
     .limit(page.size)
+    .sort({_id: 1})
     .exec(function (error, todos) {
       if (error) {
         return response.status(500).send(error);

@@ -23,5 +23,23 @@ describe("User", ()=>{
       });
 
     })
+  });
+
+  describe("Auth Token", ()=> {
+    it("should generate auth token", (done)=> {
+      let user;
+      new User({email: 'email@users.com', password: '1234567'}).save().then(saved => {
+        user = saved;
+        user.generateAuthToken().then((token)=> {
+          User.findOne({email: 'email@users.com'}).then(user=> {
+            const savedAuthToken = user.tokens.find(token => token.access == 'auth');
+            expect(savedAuthToken.token).to.equal(token);
+            done();
+          });
+        });
+      });
+
+    })
   })
+
 });
