@@ -1,6 +1,6 @@
 const
   {expect} = require('chai'),
-  User  = require('../../app/models/User'),
+  User  = require('../../app/models/user'),
   request = require("supertest"),
   app = require('../../app/app');
 
