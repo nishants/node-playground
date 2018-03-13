@@ -41,6 +41,13 @@ UserSchema.methods.generateAuthToken = function(callback){
   return user.save().then(()=> token);
 };
 
+UserSchema.statics.findByToken = function(cryptedToken){
+  const
+    User = this,
+    token = jwt.verify(cryptedToken, process.env.JWT);
+  return User.findOne({'_id': token._id, 'tokens.access' : token.access, 'tokens.token': cryptedToken});
+};
+
 const User = mongoose.model('User', UserSchema);
 
 
