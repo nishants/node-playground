@@ -55,6 +55,11 @@ describe("User", ()=>{
         done();
       });
     });
+
+    it("should raise error if token is invalid", ()=> {
+      expect(()=> User.findByToken("inavlide token")).to.throw(Error);
+    });
+
   })
 
 });
