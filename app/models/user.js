@@ -31,7 +31,12 @@ var UserSchema = new mongoose.Schema({
   }]
 });
 
-UserSchema.methods.generateAuthToken = function(callback){
+UserSchema.methods.toJSON = function(){
+  const user = this;
+  return {email: user.email};
+};
+
+UserSchema.methods.generateAuthToken = function(){
   const
     user = this,
     access = 'auth',

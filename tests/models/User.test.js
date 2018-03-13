@@ -60,6 +60,5 @@ describe("User", ()=>{
       expect(()=> User.findByToken("inavlide token")).to.throw(Error);
     });
 
-  })
-
+  });
 });
