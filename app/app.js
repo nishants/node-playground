@@ -5,7 +5,7 @@ const {ObjectID} = require('mongodb');
 const
   Todo = require('./models/todo'),
   Page = require('./models/page'),
-  User = require('./models/User');
+  User = require('./models/user');
 
 const
   app = express(),
