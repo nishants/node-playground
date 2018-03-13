@@ -1,5 +1,5 @@
 const
-  User = require('../../app/models/User'),
+  User = require('../../app/models/user'),
   {expect} = require('chai');
 
 describe("User", ()=>{
