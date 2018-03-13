@@ -20,7 +20,7 @@ describe('Users', ()=> {
       .expect(200)
       .end((error, response)=> {
         expect(error).to.be.null;
-        expect(response.body.user).to.include({email, password});
+        expect(response.body.user).to.include({email});
         done();
       });
   });
